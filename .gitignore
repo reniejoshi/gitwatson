@@ -1,0 +1,13 @@
+/backend/target/
+**/*.rs.bk
+
+/frontend/node_modules/
+/frontend/dist/
+
+.env
+*.db
+*.sqlite
+*.sqlite3
+
+.DS_Store
+.vscode/
