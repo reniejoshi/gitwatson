@@ -92,7 +92,6 @@ function App() {
               <span
                 style={{
                   color: "#6b6963",
-                  marginRight: "0.5rem",
                   fontSize: "0.88rem",
                   userSelect: "none",
                 }}
