@@ -20,9 +20,13 @@ struct GitHubProfile {
     company: Option<String>,
     location: Option<String>,
     email: Option<String>,
+    #[serde(alias = "blog")]
     website_url: Option<String>,
+    #[serde(alias = "followers")]
     followers_count: Option<u32>,
+    #[serde(alias = "following")]
     following_count: Option<u32>,
+    #[serde(alias = "public_repos")]
     repositories_count: Option<u32>,
     created_at: Option<String>,
 }
