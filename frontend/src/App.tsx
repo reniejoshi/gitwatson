@@ -346,33 +346,42 @@ function App() {
                   fontSize: "0.8rem",
                 }}
               >
-                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
-                  JOINED
-                </div>
-                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                  {(data.profile.created_at &&
-                    new Date(data.profile.created_at).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      },
-                    )) ||
-                    "No date :("}
-                </div>
-                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
-                  LOCATION
-                </div>
-                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                  {data.profile.location || "No location :("}
-                </div>
-                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
-                  COMPANY
-                </div>
-                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                  {data.profile.company || "No company :("}
-                </div>
+                {data.profile.created_at &&
+                  <div>
+                    <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                      JOINED
+                    </div>
+                    <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                      {(data.profile.created_at &&
+                        new Date(data.profile.created_at).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          },
+                        ))}
+                    </div>
+                  </div>
+                }
+                {data.profile.location &&
+                  <div>
+                    <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                      LOCATION
+                    </div>
+                    <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                      {data.profile.location}
+                    </div>
+                  </div>}
+                {data.profile.company &&
+                  <div>
+                    <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                      COMPANY
+                    </div>
+                    <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                      {data.profile.company}
+                    </div>
+                  </div>}
               </div>
             </div>
           </div>
