@@ -386,7 +386,7 @@ function App() {
                   display: "flex",
                   flexDirection: "column",
                   gap: "0.75rem",
-                  marginTop: "1.15rem",
+                  marginTop: "0.85rem",
                   paddingTop: "1rem",
                   borderTop: "1px solid #2a2926",
                   fontSize: "0.8rem",
