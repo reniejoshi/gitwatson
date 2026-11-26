@@ -36,6 +36,11 @@ struct UserLookupResponse {
     profile: GitHubProfile,
 }
 
+#[derive(Deserialize)]
+struct RepoLang {
+    language: Option<String>,
+}
+
 #[tokio::main]
 async fn main() {
     let client = Client::builder().user_agent("gitwatson").build().unwrap();
@@ -52,20 +57,35 @@ async fn get_user(
     Path(username): Path<String>,
 ) -> Result<Json<UserLookupResponse>, StatusCode> {
     let base_url = format!("https://api.github.com/users/{username}");
-    let user = client
-        .get(&base_url)
-        .send()
-        .await
-        .map_err(|_| StatusCode::BAD_GATEWAY)?;
+    let (user_res, repos_res) = tokio::join!(
+        client.get(&base_url).send(),
+        client.get(format!("{base_url}/repos?per_page=100")).send()
+    );
+    let user = user_res.map_err(|_| StatusCode::BAD_GATEWAY)?;
+    let repos = repos_res.map_err(|_| StatusCode::BAD_GATEWAY)?;
 
     if !user.status().is_success() {
         return Err(StatusCode::from_u16(user.status().as_u16()).unwrap_or(StatusCode::BAD_GATEWAY));
     }
 
-    let profile: GitHubProfile = user
+    let mut profile: GitHubProfile = user
         .json()
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let repos: Vec<RepoLang> = repos
+        .json()
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    let mut langs = std::collections::HashMap::new();
+    for repo in repos {
+        if let Some(lang) = repo.language {
+            *langs.entry(lang).or_insert(0) += 1;
+        }
+    }
+    let top_languages: Vec<String> = langs.into_iter().take(5).map(|(lang, _)| lang).collect();
+
+    profile.top_languages = Some(top_languages);
 
     Ok(Json(UserLookupResponse { profile }))
 }

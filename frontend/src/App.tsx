@@ -206,65 +206,106 @@ function App() {
               );
             })}
           </div>
-          {data && (
-            <div
-              style={{
-                padding: "1.25rem",
-                backgroundColor: "#161514",
-                border: "1px solid #383632",
-                borderRadius: "3px",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
-              >
-                <img
-                  src={data.profile.avatar_url}
-                  alt={data.profile.login}
+        </div>
+        {data && (
+          <div
+            style={{
+              padding: "1.25rem",
+              marginTop: "2.5rem",
+              backgroundColor: "#161514",
+              border: "1px solid #383632",
+              borderRadius: "3px",
+              width: "300px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <img
+                src={data.profile.avatar_url}
+                alt={data.profile.login}
+                style={{
+                  width: "56px",
+                  height: "56px",
+                  borderRadius: "3px",
+                  border: "1px solid #383632",
+                }}
+              />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div
                   style={{
-                    width: "56px",
-                    height: "56px",
-                    borderRadius: "3px",
-                    border: "1px solid #383632",
-                  }}
-                />
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: "1.05rem",
-                      fontWeight: 700,
-                      color: "#f4f7f8",
-                    }}
-                  >
-                    {data.profile.name || data.profile.login}
-                  </div>
-                  <a
-                    href={data.profile.html_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      fontSize: "0.82rem",
-                      color: "#38bdf8",
-                      textDecoration: "none",
-                    }}
-                  >
-                    @{data.profile.login} ↗
-                  </a>
-                </div>
-              </div>
-
-              {data.profile.bio && (
-                <p
-                  style={{
-                    margin: "1rem 0 0",
-                    fontSize: "0.84rem",
-                    color: "#b8b6ae",
-                    lineHeight: 1.5,
+                    fontSize: "1.05rem",
+                    fontWeight: 700,
+                    color: "#f4f7f8",
                   }}
                 >
-                  {data.profile.bio}
-                </p>
-              )}
+                  {data.profile.name || data.profile.login}
+                </div>
+                <a
+                  href={data.profile.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    fontSize: "0.82rem",
+                    color: "#38bdf8",
+                    textDecoration: "none",
+                  }}
+                >
+                  @{data.profile.login} ↗
+                </a>
+              </div>
+            </div>
+
+            {data.profile.bio && (
+              <p
+                style={{
+                  margin: "1rem 0 0",
+                  fontSize: "0.84rem",
+                  color: "#b8b6ae",
+                  lineHeight: 1.5,
+                }}
+              >
+                {data.profile.bio}
+              </p>
+            )}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
+                marginTop: "1.15rem",
+                paddingTop: "1rem",
+                borderTop: "1px solid #2a2926",
+                fontSize: "0.8rem",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{
+                    color: "#787670",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  REPOS
+                </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {data.profile.repositories_count ?? 0}
+                </div>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  FOLLOWERS
+                </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {data.profile.followers_count ?? 0}
+                </div>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  FOLLOWING
+                </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {data.profile.following_count ?? 0}
+                </div>
+              </div>
               <div
                 style={{
                   display: "flex",
@@ -276,45 +317,49 @@ function App() {
                   fontSize: "0.8rem",
                 }}
               >
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <div
-                    style={{
-                      color: "#787670",
-                      fontSize: "0.8rem",
-                    }}
-                  >
-                    REPOS
-                  </div>
-                  <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                    {data.profile.repositories_count ?? 0}
-                  </div>
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  LANGUAGES
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>
-                    FOLLOWERS
-                  </div>
-                  <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                    {data.profile.followers_count ?? 0}
-                  </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {data.profile.top_languages?.join(", ") || "No langauges :("}
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>
-                    FOLLOWING
-                  </div>
-                  <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                    {data.profile.following_count ?? 0}
-                  </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                  marginTop: "1.15rem",
+                  paddingTop: "1rem",
+                  borderTop: "1px solid #2a2926",
+                  fontSize: "0.8rem",
+                }}
+              >
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  JOINED
+                </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {(data.profile.created_at &&
+                    new Date(data.profile.created_at).toLocaleDateString(
+                      "en-US",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      },
+                    )) ||
+                    "No date :("}
+                </div>
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  LOCATION
+                </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {data.profile.location || "No location :("}
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
