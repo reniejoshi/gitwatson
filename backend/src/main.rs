@@ -27,6 +27,8 @@ struct GitHubProfile {
     name: Option<String>,
     top_languages: Option<Vec<String>>,
     bio: Option<String>,
+    status_emoji: Option<String>,
+    status_message: Option<String>,
     company: Option<String>,
     location: Option<String>,
     email: Option<String>,
@@ -83,11 +85,15 @@ async fn get_user(
     }
 
     let base_url = format!("https://api.github.com/users/{username}");
-    let (user_res, repos_res) = tokio::join!(
+    let (user_res, repos_res, page_res) = tokio::join!(
         state.client.get(&base_url).send(),
         state
             .client
             .get(format!("{base_url}/repos?per_page=100"))
+            .send(),
+        state
+            .client
+            .get(format!("https://github.com/{username}"))
             .send()
     );
     let user = user_res.map_err(|_| StatusCode::BAD_GATEWAY)?;
@@ -115,6 +121,52 @@ async fn get_user(
     let top_languages: Vec<String> = langs.into_iter().take(5).map(|(lang, _)| lang).collect();
 
     profile.top_languages = Some(top_languages);
+
+    if let Ok(page) = page_res
+        && let Ok(html) = page.text().await
+    {
+        for chunk in html.split("user-status-container").skip(1) {
+            let block = &chunk[..chunk.len().min(2500)];
+
+            if profile.status_message.is_none()
+                && let Some((_, after_msg)) = block.split_once("user-status-message-wrapper")
+                && let Some((before_close, _)) = after_msg.split_once("</div>")
+                && let Some((_, raw_msg)) = before_close.rsplit_once('>')
+            {
+                let msg = raw_msg.trim();
+                if !msg.is_empty() {
+                    profile.status_message = Some(msg.to_string());
+                }
+            }
+
+            if profile.status_emoji.is_none() {
+                if let Some((_, after_img)) = block.split_once("class=\"emoji")
+                    && let Some((_, after_alt)) = after_img.split_once("alt=\"")
+                    && let Some((emoji, _)) = after_alt.split_once('"')
+                {
+                    let emoji = emoji.trim();
+                    if !emoji.is_empty() {
+                        profile.status_emoji = Some(emoji.to_string());
+                    }
+                } else if let Some((_, after_emoji)) = block.split_once("<g-emoji")
+                    && let Some((open_tag, rest)) = after_emoji.split_once('>')
+                {
+                    let inner = rest
+                        .split_once("</g-emoji>")
+                        .map(|(t, _)| t.trim())
+                        .unwrap_or("");
+                    if !inner.is_empty() {
+                        profile.status_emoji = Some(inner.to_string());
+                    } else if let Some((_, after_alias)) = open_tag.split_once("alias=\"")
+                        && let Some((alias, _)) = after_alias.split_once('"')
+                    {
+                        profile.status_emoji = Some(format!(":{alias}:"));
+                        println!("Status emoji: {alias}");
+                    }
+                }
+            }
+        }
+    }
 
     let response = UserLookupResponse {
         profile: profile.clone(),
