@@ -263,6 +263,16 @@ function App() {
                 }}
               >
                 {data.profile.bio}
+                {data.profile.status_emoji && (
+                  <span style={{ marginLeft: "0.5rem" }}>
+                    {data.profile.status_emoji}
+                  </span>
+                )}
+                {data.profile.status_message && (
+                  <span style={{ marginLeft: "0.5rem" }}>
+                    {data.profile.status_message}
+                  </span>
+                )}
               </p>
             )}
             <div
