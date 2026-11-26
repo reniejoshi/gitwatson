@@ -112,15 +112,21 @@ async fn get_user(
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    let mut langs = std::collections::HashMap::new();
+    let mut langs = HashMap::new();
     for repo in repos {
         if let Some(lang) = repo.language {
             *langs.entry(lang).or_insert(0) += 1;
         }
     }
-    let top_languages: Vec<String> = langs.into_iter().take(5).map(|(lang, _)| lang).collect();
 
-    profile.top_languages = Some(top_languages);
+    let mut sorted_langs: Vec<(String, usize)> = langs.into_iter().collect();
+    sorted_langs.sort_by(|a, b| b.1.cmp(&a.1));
+    let top_languages: Vec<String> = sorted_langs
+        .into_iter()
+        .take(5)
+        .map(|(lang, _)| lang)
+        .collect();
+    profile.top_languages = (!top_languages.is_empty()).then_some(top_languages);
 
     if let Ok(page) = page_res
         && let Ok(html) = page.text().await
