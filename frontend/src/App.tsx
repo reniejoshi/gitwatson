@@ -2,6 +2,27 @@ import { useEffect, useRef, useState } from "react";
 import { useUserProfile } from "./api/useUserProfile";
 
 const SAMPLE_USERS = ["reniejoshi", "aadiguy", "rodlewis360", "aaravgupta299"];
+const LANGUAGE_COLORS: Record<string, string> = {
+  JavaScript: "#f1e05a",
+  TypeScript: "#3178c6",
+  Python: "#3572A5",
+  Rust: "#dea584",
+  Java: "#b07219",
+  "C#": "#178600",
+  "C++": "#f34b7d",
+  C: "#555555",
+  Go: "#00ADD8",
+  HTML: "#e34c26",
+  CSS: "#563d7c",
+  Shell: "#89e051",
+  Ruby: "#701516",
+  PHP: "#4F5D95",
+  Swift: "#F05138",
+  Kotlin: "#A97BFF",
+  Dart: "#00B4AB",
+  Lua: "#000080",
+};
+
 
 function App() {
   const [query, setQuery] = useState("");
@@ -321,20 +342,45 @@ function App() {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.75rem",
-                  marginTop: "1.15rem",
+                  gap: "0.55rem",
+                  marginTop: "0.4rem",
                   paddingTop: "1rem",
                   borderTop: "1px solid #2a2926",
                   fontSize: "0.8rem",
                 }}
               >
-                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
-                  LANGUAGES
-                </div>
-                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                  {data.profile.top_languages?.join(", ") || "No langauges :("}
-                </div>
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>LANGUAGES</div>
+                {data.profile.top_languages && data.profile.top_languages.length > 0 ? (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem 0.85rem" }}>
+                    {data.profile.top_languages.map((lang) => (
+                      <span
+                        key={lang}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.4rem",
+                          fontWeight: 600,
+                          color: "#e2f1f3",
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            backgroundColor: LANGUAGE_COLORS[lang] ?? "#8b8982",
+                            flexShrink: 0,
+                          }}
+                        />
+                        {lang}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ color: "#787670" }}>No languages</div>
+                )}
               </div>
+
               <div
                 style={{
                   display: "flex",
