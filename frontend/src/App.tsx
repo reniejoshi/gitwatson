@@ -367,6 +367,12 @@ function App() {
                 <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
                   {data.profile.location || "No location :("}
                 </div>
+                <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  COMPANY
+                </div>
+                <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                  {data.profile.company || "No company :("}
+                </div>
               </div>
             </div>
           </div>
