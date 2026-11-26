@@ -1,3 +1,5 @@
+use std::{collections::HashMap, sync::Arc, time::Duration};
+
 use axum::{
     Json, Router,
     extract::{Path, State},
@@ -7,9 +9,17 @@ use axum::{
 };
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use tokio::net::TcpListener;
+use tokio::{net::TcpListener, sync::Mutex, time::Instant};
 
-#[derive(Deserialize, Serialize)]
+type Cache = Arc<Mutex<HashMap<String, (Instant, UserLookupResponse)>>>;
+
+#[derive(Clone)]
+struct AppState {
+    client: Client,
+    cache: Cache,
+}
+
+#[derive(Deserialize, Serialize, Clone)]
 struct GitHubProfile {
     login: String,
     avatar_url: String,
@@ -31,7 +41,7 @@ struct GitHubProfile {
     created_at: Option<String>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 struct UserLookupResponse {
     profile: GitHubProfile,
 }
@@ -44,22 +54,41 @@ struct RepoLang {
 #[tokio::main]
 async fn main() {
     let client = Client::builder().user_agent("gitwatson").build().unwrap();
+    let state = AppState {
+        client: client.clone(),
+        cache: Arc::new(Mutex::new(HashMap::new())),
+    };
     let app = Router::new()
         .route("/api/users/{username}", get(get_user))
-        .with_state(client);
+        .with_state(state);
     let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
 
     serve(listener, app).await.unwrap();
 }
 
 async fn get_user(
-    State(client): State<Client>,
-    Path(username): Path<String>,
+    State(state): State<AppState>,
+    Path(raw_username): Path<String>,
 ) -> Result<Json<UserLookupResponse>, StatusCode> {
+    let username = raw_username.trim().to_lowercase();
+    let ttl = Duration::from_secs(600);
+
+    {
+        let cache = state.cache.lock().await;
+        if let Some((fetched_at, cached)) = cache.get(&username)
+            && fetched_at.elapsed() < ttl
+        {
+            return Ok(Json(cached.clone()));
+        }
+    }
+
     let base_url = format!("https://api.github.com/users/{username}");
     let (user_res, repos_res) = tokio::join!(
-        client.get(&base_url).send(),
-        client.get(format!("{base_url}/repos?per_page=100")).send()
+        state.client.get(&base_url).send(),
+        state
+            .client
+            .get(format!("{base_url}/repos?per_page=100"))
+            .send()
     );
     let user = user_res.map_err(|_| StatusCode::BAD_GATEWAY)?;
     let repos = repos_res.map_err(|_| StatusCode::BAD_GATEWAY)?;
@@ -87,5 +116,13 @@ async fn get_user(
 
     profile.top_languages = Some(top_languages);
 
-    Ok(Json(UserLookupResponse { profile }))
+    let response = UserLookupResponse {
+        profile: profile.clone(),
+    };
+    state
+        .cache
+        .lock()
+        .await
+        .insert(username, (Instant::now(), response.clone()));
+    Ok(Json(response))
 }
