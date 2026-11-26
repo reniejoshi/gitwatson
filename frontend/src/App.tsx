@@ -1,75 +1,75 @@
-import { useEffect, useRef, useState } from 'react'
-import { useUserProfile } from './api/useUserProfile'
+import { useEffect, useRef, useState } from "react";
+import { useUserProfile } from "./api/useUserProfile";
 
-const SAMPLE_USERS = ['reniejoshi', 'aadiguy', 'rodlewis360', 'aaravgupta299']
+const SAMPLE_USERS = ["reniejoshi", "aadiguy", "rodlewis360", "aaravgupta299"];
 
 function App() {
-  const [query, setQuery] = useState('')
-  const [isFocused, setIsFocused] = useState(false)
-  const [hoveredChip, setHoveredChip] = useState<string | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [submittedUser, setSubmittedUser] = useState('')
-  const { data, isLoading, isError, error } = useUserProfile(submittedUser)
+  const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [hoveredChip, setHoveredChip] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [submittedUser, setSubmittedUser] = useState("");
+  const { data } = useUserProfile(submittedUser);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/' && document.activeElement !== inputRef.current) {
-        e.preventDefault()
-        inputRef.current?.focus()
+      if (e.key === "/" && document.activeElement !== inputRef.current) {
+        e.preventDefault();
+        inputRef.current?.focus();
       }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   const runSearch = (username: string) => {
-    const trimmedUsername = username.trim()
-    if (!trimmedUsername) return
-    setQuery(trimmedUsername)
-    setSubmittedUser(trimmedUsername)
-    console.log('Searching for:', trimmedUsername)
-  }
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) return;
+    setQuery(trimmedUsername);
+    setSubmittedUser(trimmedUsername);
+    console.log("Searching for:", trimmedUsername);
+  };
 
   const clearSearch = () => {
-    setQuery('')
-    setSubmittedUser('')
-  }
+    setQuery("");
+    setSubmittedUser("");
+  };
 
   const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    runSearch(query)
-  }
+    e.preventDefault();
+    runSearch(query);
+  };
 
   return (
     <div
       style={{
-        minHeight: '100vh',
-        backgroundColor: '#1f1e1c',
-        backgroundImage: 'radial-gradient(#302f2c 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-        color: '#e2f1f3',
+        minHeight: "100vh",
+        backgroundColor: "#1f1e1c",
+        backgroundImage: "radial-gradient(#302f2c 1px, transparent 1px)",
+        backgroundSize: "24px 24px",
+        color: "#e2f1f3",
         fontFamily: "'Fira Code', monospace",
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <main
         style={{
           flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '18vh 1.25rem 4rem',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "18vh 1.25rem 4rem",
         }}
       >
-        <div style={{ width: '100%', maxWidth: '540px' }}>
+        <div style={{ width: "100%", maxWidth: "540px" }}>
           <h1
             style={{
-              fontSize: '1.75rem',
+              fontSize: "1.75rem",
               fontWeight: 700,
-              letterSpacing: '-0.03em',
-              margin: '0 0 0.4rem 0',
-              color: '#f4f7f8',
+              letterSpacing: "-0.03em",
+              margin: "0 0 0.4rem 0",
+              color: "#f4f7f8",
             }}
           >
             gitwatson
@@ -77,22 +77,24 @@ function App() {
           <form onSubmit={handleSearch}>
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#161514',
-                border: `1px solid ${isFocused ? '#1d6fa5' : '#383632'}`,
-                boxShadow: isFocused ? '0 0 0 2px rgba(10, 63, 102, 0.35)' : 'none',
-                borderRadius: '3px',
-                padding: '0.65rem 0.85rem',
-                transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: "#161514",
+                border: `1px solid ${isFocused ? "#1d6fa5" : "#383632"}`,
+                boxShadow: isFocused
+                  ? "0 0 0 2px rgba(10, 63, 102, 0.35)"
+                  : "none",
+                borderRadius: "3px",
+                padding: "0.65rem 0.85rem",
+                transition: "border-color 0.15s ease, box-shadow 0.15s ease",
               }}
             >
               <span
                 style={{
-                  color: '#6b6963',
-                  marginRight: '0.5rem',
-                  fontSize: '0.88rem',
-                  userSelect: 'none',
+                  color: "#6b6963",
+                  marginRight: "0.5rem",
+                  fontSize: "0.88rem",
+                  userSelect: "none",
                 }}
               >
                 ://github.com/
@@ -105,9 +107,9 @@ function App() {
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Escape') {
-                    clearSearch()
-                    inputRef.current?.blur()
+                  if (e.key === "Escape") {
+                    clearSearch();
+                    inputRef.current?.blur();
                   }
                 }}
                 placeholder="username"
@@ -117,12 +119,12 @@ function App() {
                 autoComplete="off"
                 style={{
                   flex: 1,
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  color: '#e2f1f3',
-                  fontFamily: 'inherit',
-                  fontSize: '0.9rem',
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                  color: "#e2f1f3",
+                  fontFamily: "inherit",
+                  fontSize: "0.9rem",
                   minWidth: 0,
                 }}
               />
@@ -130,19 +132,19 @@ function App() {
                 <button
                   type="button"
                   onClick={() => {
-                    clearSearch()
-                    inputRef.current?.focus()
+                    clearSearch();
+                    inputRef.current?.focus();
                   }}
                   style={{
-                    backgroundColor: '#242320',
-                    border: '1px solid #3a3834',
-                    borderRadius: '2px',
-                    color: '#9a9890',
-                    cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    fontSize: '0.75rem',
-                    padding: '0.15rem 0.45rem',
-                    marginLeft: '0.5rem',
+                    backgroundColor: "#242320",
+                    border: "1px solid #3a3834",
+                    borderRadius: "2px",
+                    color: "#9a9890",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    fontSize: "0.75rem",
+                    padding: "0.15rem 0.45rem",
+                    marginLeft: "0.5rem",
                   }}
                 >
                   esc
@@ -150,14 +152,14 @@ function App() {
               ) : (
                 <kbd
                   style={{
-                    backgroundColor: '#242320',
-                    border: '1px solid #3a3834',
-                    borderRadius: '2px',
-                    color: '#787670',
-                    fontFamily: 'inherit',
-                    fontSize: '0.75rem',
-                    padding: '0.15rem 0.45rem',
-                    marginLeft: '0.5rem',
+                    backgroundColor: "#242320",
+                    border: "1px solid #3a3834",
+                    borderRadius: "2px",
+                    color: "#787670",
+                    fontFamily: "inherit",
+                    fontSize: "0.75rem",
+                    padding: "0.15rem 0.45rem",
+                    marginLeft: "0.5rem",
                   }}
                 >
                   /
@@ -167,17 +169,17 @@ function App() {
           </form>
           <div
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '0.5rem',
-              marginTop: '0.85rem',
-              fontSize: '0.78rem',
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginTop: "0.85rem",
+              fontSize: "0.78rem",
             }}
           >
-            <span style={{ color: '#6b6963' }}>try:</span>
+            <span style={{ color: "#6b6963" }}>try:</span>
             {SAMPLE_USERS.map((user) => {
-              const isHovered = hoveredChip === user
+              const isHovered = hoveredChip === user;
               return (
                 <button
                   key={user}
@@ -186,66 +188,136 @@ function App() {
                   onMouseEnter={() => setHoveredChip(user)}
                   onMouseLeave={() => setHoveredChip(null)}
                   style={{
-                    backgroundColor: isHovered ? 'rgba(10, 63, 102, 0.25)' : 'transparent',
-                    border: `1px solid ${isHovered ? '#1d6fa5' : '#2f2e2b'}`,
-                    borderRadius: '2px',
-                    color: isHovered ? '#e2f1f3' : '#96948c',
-                    fontFamily: 'inherit',
-                    fontSize: '0.78rem',
-                    padding: '0.2rem 0.5rem',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
+                    backgroundColor: isHovered
+                      ? "rgba(10, 63, 102, 0.25)"
+                      : "transparent",
+                    border: `1px solid ${isHovered ? "#1d6fa5" : "#2f2e2b"}`,
+                    borderRadius: "2px",
+                    color: isHovered ? "#e2f1f3" : "#96948c",
+                    fontFamily: "inherit",
+                    fontSize: "0.78rem",
+                    padding: "0.2rem 0.5rem",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
                   }}
                 >
                   {user}
                 </button>
-              )
+              );
             })}
           </div>
-          {
-            submittedUser && (
-              <section style={{ marginTop: '2rem' }}>
-                {isLoading && <p>Loading...</p>}
-
-                {isError && (
+          {data && (
+            <div
+              style={{
+                padding: "1.25rem",
+                backgroundColor: "#161514",
+                border: "1px solid #383632",
+                borderRadius: "3px",
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              >
+                <img
+                  src={data.profile.avatar_url}
+                  alt={data.profile.login}
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    borderRadius: "3px",
+                    border: "1px solid #383632",
+                  }}
+                />
+                <div style={{ minWidth: 0, flex: 1 }}>
                   <div
                     style={{
-                      padding: '1rem',
-                      backgroundColor: 'rgba(127, 29, 29, 0.15)',
-                      border: '1px solid #7f1d1d',
-                      borderRadius: '3px',
-                      color: '#fca5a5',
-                      fontSize: '0.85rem',
+                      fontSize: "1.05rem",
+                      fontWeight: 700,
+                      color: "#f4f7f8",
                     }}
                   >
-                    {error instanceof Error ? error.message : 'Failed to fetch user profile :('}
+                    {data.profile.name || data.profile.login}
                   </div>
-                )}
-
-                {data && (
-                  <pre
+                  <a
+                    href={data.profile.html_url}
+                    target="_blank"
+                    rel="noreferrer"
                     style={{
-                      padding: '1rem',
-                      backgroundColor: '#161514',
-                      border: '1px solid #2e2d2a',
-                      borderRadius: '3px',
-                      color: '#e2f1f3',
-                      fontSize: '0.8rem',
-                      overflowX: 'auto',
-                      margin: 0,
+                      fontSize: "0.82rem",
+                      color: "#38bdf8",
+                      textDecoration: "none",
                     }}
                   >
-                    {JSON.stringify(data, null, 2)}
-                  </pre>
-                )}
-              </section>
-            )
-          }
+                    @{data.profile.login} ↗
+                  </a>
+                </div>
+              </div>
+
+              {data.profile.bio && (
+                <p
+                  style={{
+                    margin: "1rem 0 0",
+                    fontSize: "0.84rem",
+                    color: "#b8b6ae",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {data.profile.bio}
+                </p>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                  marginTop: "1.15rem",
+                  paddingTop: "1rem",
+                  borderTop: "1px solid #2a2926",
+                  fontSize: "0.8rem",
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div
+                    style={{
+                      color: "#787670",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    REPOS
+                  </div>
+                  <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                    {data.profile.repositories_count ?? 0}
+                  </div>
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                    FOLLOWERS
+                  </div>
+                  <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                    {data.profile.followers_count ?? 0}
+                  </div>
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                    FOLLOWING
+                  </div>
+                  <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                    {data.profile.following_count ?? 0}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
-
-  )
+  );
 }
 
-export default App
+export default App;

@@ -6,8 +6,31 @@ use axum::{
     serve,
 };
 use reqwest::Client;
-use serde_json::{Value, json};
+use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
+
+#[derive(Deserialize, Serialize)]
+struct GitHubProfile {
+    login: String,
+    avatar_url: String,
+    html_url: String,
+    name: Option<String>,
+    top_languages: Option<Vec<String>>,
+    bio: Option<String>,
+    company: Option<String>,
+    location: Option<String>,
+    email: Option<String>,
+    website_url: Option<String>,
+    followers_count: Option<u32>,
+    following_count: Option<u32>,
+    repositories_count: Option<u32>,
+    created_at: Option<String>,
+}
+
+#[derive(Serialize)]
+struct UserLookupResponse {
+    profile: GitHubProfile,
+}
 
 #[tokio::main]
 async fn main() {
@@ -23,7 +46,7 @@ async fn main() {
 async fn get_user(
     State(client): State<Client>,
     Path(username): Path<String>,
-) -> Result<Json<Value>, StatusCode> {
+) -> Result<Json<UserLookupResponse>, StatusCode> {
     let base_url = format!("https://api.github.com/users/{username}");
     let user = client
         .get(&base_url)
@@ -35,9 +58,10 @@ async fn get_user(
         return Err(StatusCode::from_u16(user.status().as_u16()).unwrap_or(StatusCode::BAD_GATEWAY));
     }
 
-    let profile: Value = user
+    let profile: GitHubProfile = user
         .json()
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(Json(json!({"profile": profile})))
+
+    Ok(Json(UserLookupResponse { profile }))
 }

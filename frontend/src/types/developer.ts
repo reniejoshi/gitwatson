@@ -1,12 +1,21 @@
-export interface Developer {
-    username: string;
-    avatarUrl: string;
-    topLanguages: string[];
-    bio: string;
+export interface GitHubProfile {
+  username?: string;
+  login?: string;
+  avatar_url?: string;
+  html_url?: string;
+  name?: string;
+  top_languages?: string[];
+  bio?: string;
+  company?: string;
+  location?: string;
+  email?: string;
+  website_url?: string;
+  followers_count?: number;
+  following_count?: number;
+  repositories_count?: number;
+  created_at?: string;
 }
 
 export interface UserLookupResponse {
-    targetUser: string;
-    profile: Developer;
-    cachedAt: string;
+  profile: GitHubProfile;
 }
