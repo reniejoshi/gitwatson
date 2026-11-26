@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useUserProfile } from './api/useUserProfile'
 
 const SAMPLE_USERS = ['reniejoshi', 'aadiguy', 'rodlewis360', 'aaravgupta299']
 
@@ -7,6 +8,8 @@ function App() {
   const [isFocused, setIsFocused] = useState(false)
   const [hoveredChip, setHoveredChip] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const [submittedUser, setSubmittedUser] = useState('')
+  const { data, isLoading, isError, error } = useUserProfile(submittedUser)
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -23,7 +26,13 @@ function App() {
     const trimmedUsername = username.trim()
     if (!trimmedUsername) return
     setQuery(trimmedUsername)
+    setSubmittedUser(trimmedUsername)
     console.log('Searching for:', trimmedUsername)
+  }
+
+  const clearSearch = () => {
+    setQuery('')
+    setSubmittedUser('')
   }
 
   const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -97,7 +106,7 @@ function App() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') {
-                    setQuery('')
+                    clearSearch()
                     inputRef.current?.blur()
                   }
                 }}
@@ -121,7 +130,7 @@ function App() {
                 <button
                   type="button"
                   onClick={() => {
-                    setQuery('')
+                    clearSearch()
                     inputRef.current?.focus()
                   }}
                   style={{
@@ -193,9 +202,49 @@ function App() {
               )
             })}
           </div>
+          {
+            submittedUser && (
+              <section style={{ marginTop: '2rem' }}>
+                {isLoading && <p>Loading...</p>}
+
+                {isError && (
+                  <div
+                    style={{
+                      padding: '1rem',
+                      backgroundColor: 'rgba(127, 29, 29, 0.15)',
+                      border: '1px solid #7f1d1d',
+                      borderRadius: '3px',
+                      color: '#fca5a5',
+                      fontSize: '0.85rem',
+                    }}
+                  >
+                    {error instanceof Error ? error.message : 'Failed to fetch user profile :('}
+                  </div>
+                )}
+
+                {data && (
+                  <pre
+                    style={{
+                      padding: '1rem',
+                      backgroundColor: '#161514',
+                      border: '1px solid #2e2d2a',
+                      borderRadius: '3px',
+                      color: '#e2f1f3',
+                      fontSize: '0.8rem',
+                      overflowX: 'auto',
+                      margin: 0,
+                    }}
+                  >
+                    {JSON.stringify(data, null, 2)}
+                  </pre>
+                )}
+              </section>
+            )
+          }
         </div>
       </main>
     </div>
+
   )
 }
 
