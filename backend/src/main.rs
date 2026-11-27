@@ -1,15 +1,16 @@
-use std::{collections::HashMap, sync::Arc, time::Duration};
+use std::{collections::HashMap, env, sync::Arc, time::Duration};
 
 use axum::{
     Json, Router,
     extract::{Path, State},
-    http::StatusCode,
+    http::{Method, StatusCode},
     routing::get,
     serve,
 };
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use tokio::{net::TcpListener, sync::Mutex, time::Instant};
+use tower_http::cors::{Any, CorsLayer};
 
 type Cache = Arc<Mutex<HashMap<String, (Instant, UserLookupResponse)>>>;
 
@@ -56,14 +57,25 @@ struct RepoLang {
 #[tokio::main]
 async fn main() {
     let client = Client::builder().user_agent("gitwatson").build().unwrap();
+
     let state = AppState {
-        client: client.clone(),
+        client,
         cache: Arc::new(Mutex::new(HashMap::new())),
     };
+
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods([Method::GET]);
+
     let app = Router::new()
         .route("/api/users/{username}", get(get_user))
+        .layer(cors)
         .with_state(state);
-    let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
+
+    let port = env::var("PORT").unwrap_or_else(|_| "3000".to_string());
+    let address = format!("0.0.0.0:{port}");
+    let listener = TcpListener::bind(&address).await.unwrap();
+    println!("gitwatson backend listening on {address}");
 
     serve(listener, app).await.unwrap();
 }
@@ -159,9 +171,7 @@ async fn get_user(
         }
     }
 
-    let response = UserLookupResponse {
-        profile: profile.clone(),
-    };
+    let response = UserLookupResponse { profile };
     state
         .cache
         .lock()
