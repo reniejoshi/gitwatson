@@ -3,11 +3,9 @@
   <strong>gitwatson</strong>
 </h1>
 <div>
-
-  ![Rust](https://img.shields.io/badge/Rust-D34516?logo=rust&logoColor=white)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-  ![React](https://img.shields.io/badge/ReactJs-61DBFB?logo=react&logoColor=white)
-
+  <img src="https://img.shields.io/badge/Rust-D34516?logo=rust&logoColor=white" alt="Rust" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/ReactJs-61DBFB?logo=react&logoColor=white" alt="ReactJs" />
 </div>
 
 ### Local Development
