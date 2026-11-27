@@ -47,7 +47,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
             rel="noreferrer"
             style={{
               fontSize: "0.82rem",
-              color: THEME.accent,
+              color: THEME.link,
               textDecoration: "none",
             }}
           >
@@ -83,22 +83,22 @@ export function ProfileCard({ profile }: ProfileCardProps) {
 
       <div style={sectionDivider}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ color: THEME.textMuted }}>REPOS</div>
+          <div style={{ color: THEME.accent }}>REPOS</div>
           <div style={{ fontWeight: 700 }}>
             {profile.repositories_count ?? 0}
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ color: THEME.textMuted }}>FOLLOWERS</div>
+          <div style={{ color: THEME.accent }}>FOLLOWERS</div>
           <div style={{ fontWeight: 700 }}>{profile.followers_count ?? 0}</div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ color: THEME.textMuted }}>FOLLOWING</div>
+          <div style={{ color: THEME.accent }}>FOLLOWING</div>
           <div style={{ fontWeight: 700 }}>{profile.following_count ?? 0}</div>
         </div>
 
         <div style={{ ...sectionDivider, marginTop: "0.4rem", gap: "0.55rem" }}>
-          <div style={{ color: THEME.textMuted }}>LANGUAGES</div>
+          <div style={{ color: THEME.accent }}>LANGUAGES</div>
           {profile.top_languages && profile.top_languages.length > 0 ? (
             <div
               style={{
@@ -119,7 +119,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         <div style={{ ...sectionDivider, marginTop: "0.4rem" }}>
           {profile.created_at && (
             <div>
-              <div style={{ color: THEME.textMuted }}>JOINED</div>
+              <div style={{ color: THEME.accent }}>JOINED</div>
               <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
                 {new Date(profile.created_at).toLocaleDateString("en-US", {
                   month: "short",
@@ -131,7 +131,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           )}
           {profile.location && (
             <div>
-              <div style={{ color: THEME.textMuted }}>LOCATION</div>
+              <div style={{ color: THEME.accent }}>LOCATION</div>
               <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
                 {profile.location}
               </div>
@@ -139,9 +139,16 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           )}
           {profile.company && (
             <div>
-              <div style={{ color: THEME.textMuted }}>COMPANY</div>
+              <div style={{ color: THEME.accent }}>COMPANY</div>
               <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                {profile.company}
+                <a
+                  href={`https://github.com/${profile.company}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: THEME.link }}
+                >
+                  {profile.company} ↗
+                </a>
               </div>
             </div>
           )}
