@@ -181,6 +181,21 @@ export function ProfileCard({ profile }: ProfileCardProps) {
               </div>
             </div>
           )}
+          {profile.website_url && (
+            <div>
+              <div style={{ color: THEME.accent }}>WEBSITE</div>
+              <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                <a
+                  href={profile.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: THEME.link }}
+                >
+                  {profile.website_url} ↗
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Card>
