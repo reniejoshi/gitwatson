@@ -23,7 +23,6 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Lua: "#000080",
 };
 
-
 function App() {
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -65,10 +64,10 @@ function App() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#1f1e1c",
-        backgroundImage: "radial-gradient(#302f2c 1px, transparent 1px)",
+        backgroundColor: "#0f0e17",
+        backgroundImage: "radial-gradient(#1e1d2e 1px, transparent 1px)",
         backgroundSize: "24px 24px",
-        color: "#e2f1f3",
+        color: "#e2e8f0",
         fontFamily: "'Fira Code', monospace",
         display: "flex",
         flexDirection: "column",
@@ -90,7 +89,7 @@ function App() {
               fontWeight: 700,
               letterSpacing: "-0.03em",
               margin: "0 0 0.4rem 0",
-              color: "#f4f7f8",
+              color: "#f1f5f9",
             }}
           >
             gitwatson
@@ -101,9 +100,9 @@ function App() {
                 display: "flex",
                 alignItems: "center",
                 backgroundColor: "#161514",
-                border: `1px solid ${isFocused ? "#1d6fa5" : "#383632"}`,
+                border: `1px solid ${isFocused ? "#1d6fa5" : "#2563eb"}`,
                 boxShadow: isFocused
-                  ? "0 0 0 2px rgba(10, 63, 102, 0.35)"
+                  ? "0 0 0 2px rgba(59, 130, 246, 0.25)"
                   : "none",
                 borderRadius: "3px",
                 padding: "0.65rem 0.85rem",
@@ -112,7 +111,7 @@ function App() {
             >
               <span
                 style={{
-                  color: "#6b6963",
+                  color: "#2563eb",
                   fontSize: "0.88rem",
                   userSelect: "none",
                 }}
@@ -142,7 +141,7 @@ function App() {
                   background: "transparent",
                   border: "none",
                   outline: "none",
-                  color: "#e2f1f3",
+                  color: "#e2e8f0",
                   fontFamily: "inherit",
                   fontSize: "0.9rem",
                   minWidth: 0,
@@ -156,10 +155,10 @@ function App() {
                     inputRef.current?.focus();
                   }}
                   style={{
-                    backgroundColor: "#242320",
-                    border: "1px solid #3a3834",
+                    backgroundColor: "#1e1d30",
+                    border: "1px solid #2e2d47",
                     borderRadius: "2px",
-                    color: "#9a9890",
+                    color: "#94a3b8",
                     cursor: "pointer",
                     fontFamily: "inherit",
                     fontSize: "0.75rem",
@@ -172,10 +171,10 @@ function App() {
               ) : (
                 <kbd
                   style={{
-                    backgroundColor: "#242320",
-                    border: "1px solid #3a3834",
+                    backgroundColor: "#1e1d30",
+                    border: "1px solid #2e2d47",
                     borderRadius: "2px",
-                    color: "#787670",
+                    color: "#64748b",
                     fontFamily: "inherit",
                     fontSize: "0.75rem",
                     padding: "0.15rem 0.45rem",
@@ -197,7 +196,7 @@ function App() {
               fontSize: "0.78rem",
             }}
           >
-            <span style={{ color: "#6b6963" }}>try:</span>
+            <span style={{ color: "#64748b" }}>try:</span>
             {SAMPLE_USERS.map((user) => {
               const isHovered = hoveredChip === user;
               return (
@@ -209,11 +208,11 @@ function App() {
                   onMouseLeave={() => setHoveredChip(null)}
                   style={{
                     backgroundColor: isHovered
-                      ? "rgba(10, 63, 102, 0.25)"
+                      ? "rgba(37, 99, 235, 0.2)"
                       : "transparent",
-                    border: `1px solid ${isHovered ? "#1d6fa5" : "#2f2e2b"}`,
+                    border: `1px solid ${isHovered ? "#3b82f6" : "#2563eb"}`,
                     borderRadius: "2px",
-                    color: isHovered ? "#e2f1f3" : "#96948c",
+                    color: isHovered ? "#f1f5f9" : "#94a3b8",
                     fontFamily: "inherit",
                     fontSize: "0.78rem",
                     padding: "0.2rem 0.5rem",
@@ -232,8 +231,8 @@ function App() {
             <div
               style={{
                 padding: "1.25rem",
-                backgroundColor: "#161514",
-                border: "1px solid #383632",
+                backgroundColor: "#161524",
+                border: "1px solid #2563eb",
                 borderRadius: "3px",
                 width: "300px",
               }}
@@ -246,7 +245,7 @@ function App() {
                     width: "56px",
                     height: "56px",
                     borderRadius: "3px",
-                    border: "1px solid #383632",
+                    border: "1px solid #2563eb",
                   }}
                 />
                 <div style={{ minWidth: 0, flex: 1 }}>
@@ -254,7 +253,7 @@ function App() {
                     style={{
                       fontSize: "1.05rem",
                       fontWeight: 700,
-                      color: "#f4f7f8",
+                      color: "#f1f5f9",
                     }}
                   >
                     {data.profile.name || data.profile.login}
@@ -279,7 +278,7 @@ function App() {
                   style={{
                     margin: "1rem 0 0",
                     fontSize: "0.84rem",
-                    color: "#b8b6ae",
+                    color: "#94a3b8",
                     lineHeight: 1.5,
                   }}
                 >
@@ -291,7 +290,7 @@ function App() {
                   style={{
                     margin: "1rem 0 0",
                     fontSize: "0.84rem",
-                    color: "#b8b6ae",
+                    color: "#94a3b8",
                     lineHeight: 1.5,
                   }}
                 >
@@ -305,14 +304,14 @@ function App() {
                   gap: "0.75rem",
                   marginTop: "1.15rem",
                   paddingTop: "1rem",
-                  borderTop: "1px solid #2a2926",
+                  borderTop: "1px solid #2563eb",
                   fontSize: "0.8rem",
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <div
                     style={{
-                      color: "#787670",
+                      color: "#64748b",
                       fontSize: "0.8rem",
                     }}
                   >
@@ -323,7 +322,7 @@ function App() {
                   </div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                     FOLLOWERS
                   </div>
                   <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
@@ -331,7 +330,7 @@ function App() {
                   </div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                  <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                     FOLLOWING
                   </div>
                   <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
@@ -345,11 +344,11 @@ function App() {
                     gap: "0.55rem",
                     marginTop: "0.4rem",
                     paddingTop: "1rem",
-                    borderTop: "1px solid #2a2926",
+                    borderTop: "1px solid #2563eb",
                     fontSize: "0.8rem",
                   }}
                 >
-                  <div style={{ color: "#787670", fontSize: "0.8rem" }}>LANGUAGES</div>
+                  <div style={{ color: "#64748b", fontSize: "0.8rem" }}>LANGUAGES</div>
                   {data.profile.top_languages && data.profile.top_languages.length > 0 ? (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem 0.85rem" }}>
                       {data.profile.top_languages.map((lang) => (
@@ -360,7 +359,7 @@ function App() {
                             alignItems: "center",
                             gap: "0.4rem",
                             fontWeight: 600,
-                            color: "#e2f1f3",
+                            color: "#e2e8f0",
                           }}
                         >
                           <span
@@ -377,7 +376,7 @@ function App() {
                       ))}
                     </div>
                   ) : (
-                    <div style={{ color: "#787670" }}>No languages</div>
+                    <div style={{ color: "#64748b" }}>No languages</div>
                   )}
                 </div>
 
@@ -388,13 +387,13 @@ function App() {
                     gap: "0.75rem",
                     marginTop: "0.85rem",
                     paddingTop: "1rem",
-                    borderTop: "1px solid #2a2926",
+                    borderTop: "1px solid #2563eb",
                     fontSize: "0.8rem",
                   }}
                 >
                   {data.profile.created_at &&
                     <div>
-                      <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                      <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                         JOINED
                       </div>
                       <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
@@ -412,7 +411,7 @@ function App() {
                   }
                   {data.profile.location &&
                     <div>
-                      <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                      <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                         LOCATION
                       </div>
                       <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
@@ -421,7 +420,7 @@ function App() {
                     </div>}
                   {data.profile.company &&
                     <div>
-                      <div style={{ color: "#787670", fontSize: "0.8rem" }}>
+                      <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                         COMPANY
                       </div>
                       <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
@@ -436,8 +435,8 @@ function App() {
             <div
               style={{
                 padding: "1.25rem",
-                backgroundColor: "#161514",
-                border: "1px solid #383632",
+                backgroundColor: "#161524",
+                border: "1px solid #2563eb",
                 borderRadius: "3px",
                 width: "700px",
               }}
