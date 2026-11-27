@@ -175,7 +175,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
                     href={profile.company_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: THEME.accent, textDecoration: "none" }}
+                    style={{ color: THEME.link, textDecoration: "none" }}
                   >
                     {profile.company} ↗
                   </a>

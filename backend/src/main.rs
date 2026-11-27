@@ -150,11 +150,11 @@ async fn get_user(
     if let Some(raw_company) = &profile.company {
         let handle = raw_company.trim().trim_start_matches('@');
         if !handle.is_empty() && !handle.contains(' ') {
-            let org_url = format!("https://github.com{handle}");
+            let org_url = format!("https://github.com/{handle}");
             if let Ok(res) = state.client.get(&org_url).send().await
                 && res.status().is_success()
             {
-                profile.company_url = Some(format!("https://github.com/{handle}"));
+                profile.company_url = org_url.into();
             }
         }
     }
