@@ -226,7 +226,15 @@ function App() {
             })}
           </div>
         </div>
-        <section style={{ marginTop: "2.5rem", display: "flex", flexDirection: "row", gap: "1rem", justifyContent: "center" }}>
+        <section
+          style={{
+            marginTop: "2.5rem",
+            display: "flex",
+            flexDirection: "row",
+            gap: "1rem",
+            justifyContent: "center",
+          }}
+        >
           {data && (
             <div
               style={{
@@ -237,7 +245,9 @@ function App() {
                 width: "300px",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              >
                 <img
                   src={data.profile.avatar_url}
                   alt={data.profile.login}
@@ -308,7 +318,9 @@ function App() {
                   fontSize: "0.8rem",
                 }}
               >
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <div
                     style={{
                       color: "#64748b",
@@ -321,7 +333,9 @@ function App() {
                     {data.profile.repositories_count ?? 0}
                   </div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                     FOLLOWERS
                   </div>
@@ -329,7 +343,9 @@ function App() {
                     {data.profile.followers_count ?? 0}
                   </div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                     FOLLOWING
                   </div>
@@ -348,9 +364,18 @@ function App() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  <div style={{ color: "#64748b", fontSize: "0.8rem" }}>LANGUAGES</div>
-                  {data.profile.top_languages && data.profile.top_languages.length > 0 ? (
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem 0.85rem" }}>
+                  <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
+                    LANGUAGES
+                  </div>
+                  {data.profile.top_languages &&
+                  data.profile.top_languages.length > 0 ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.5rem 0.85rem",
+                      }}
+                    >
                       {data.profile.top_languages.map((lang) => (
                         <span
                           key={lang}
@@ -367,7 +392,8 @@ function App() {
                               width: "8px",
                               height: "8px",
                               borderRadius: "50%",
-                              backgroundColor: LANGUAGE_COLORS[lang] ?? "#8b8982",
+                              backgroundColor:
+                                LANGUAGE_COLORS[lang] ?? "#8b8982",
                               flexShrink: 0,
                             }}
                           />
@@ -391,13 +417,13 @@ function App() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  {data.profile.created_at &&
+                  {data.profile.created_at && (
                     <div>
                       <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                         JOINED
                       </div>
                       <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                        {(data.profile.created_at &&
+                        {data.profile.created_at &&
                           new Date(data.profile.created_at).toLocaleDateString(
                             "en-US",
                             {
@@ -405,11 +431,11 @@ function App() {
                               day: "numeric",
                               year: "numeric",
                             },
-                          ))}
+                          )}
                       </div>
                     </div>
-                  }
-                  {data.profile.location &&
+                  )}
+                  {data.profile.location && (
                     <div>
                       <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                         LOCATION
@@ -417,8 +443,9 @@ function App() {
                       <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
                         {data.profile.location}
                       </div>
-                    </div>}
-                  {data.profile.company &&
+                    </div>
+                  )}
+                  {data.profile.company && (
                     <div>
                       <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
                         COMPANY
@@ -426,7 +453,29 @@ function App() {
                       <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
                         {data.profile.company}
                       </div>
-                    </div>}
+                    </div>
+                  )}
+                  {data.profile.website_url && (
+                    <div>
+                      <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
+                        WEBSITE
+                      </div>
+                      <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
+                        <a
+                          href={data.profile.website_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontSize: "0.82rem",
+                            color: "#38bdf8",
+                            textDecoration: "none",
+                          }}
+                        >
+                          {data.profile.website_url} ↗
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
