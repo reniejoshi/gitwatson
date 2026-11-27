@@ -8,6 +8,7 @@ export interface GitHubProfile {
   bio?: string;
   status_message?: string;
   company?: string;
+  company_url?: string;
   location?: string;
   email?: string;
   website_url?: string;

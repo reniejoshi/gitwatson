@@ -29,6 +29,7 @@ struct GitHubProfile {
     bio: Option<String>,
     status_message: Option<String>,
     company: Option<String>,
+    company_url: Option<String>,
     location: Option<String>,
     email: Option<String>,
     #[serde(alias = "blog")]
@@ -119,7 +120,7 @@ async fn get_user(
     }
 
     let mut sorted_langs: Vec<(String, usize)> = langs.into_iter().collect();
-    sorted_langs.sort_by(|a, b| b.1.cmp(&a.1));
+    sorted_langs.sort_by_key(|a| std::cmp::Reverse(a.1));
     let top_languages: Vec<String> = sorted_langs
         .into_iter()
         .take(5)
@@ -142,6 +143,18 @@ async fn get_user(
                 if !msg.is_empty() {
                     profile.status_message = Some(msg.to_string());
                 }
+            }
+        }
+    }
+
+    if let Some(raw_company) = &profile.company {
+        let handle = raw_company.trim().trim_start_matches('@');
+        if !handle.is_empty() && !handle.contains(' ') {
+            let org_url = format!("https://github.com{handle}");
+            if let Ok(res) = state.client.get(&org_url).send().await
+                && res.status().is_success()
+            {
+                profile.company_url = Some(format!("https://github.com/{handle}"));
             }
         }
     }

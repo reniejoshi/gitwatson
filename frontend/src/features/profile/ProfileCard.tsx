@@ -170,14 +170,18 @@ export function ProfileCard({ profile }: ProfileCardProps) {
             <div>
               <div style={{ color: THEME.accent }}>COMPANY</div>
               <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
-                <a
-                  href={`https://github.com/${profile.company.at(0) === "@" ? profile.company.slice(1) : profile.company}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: THEME.link }}
-                >
-                  {profile.company} ↗
-                </a>
+                {profile.company_url ? (
+                  <a
+                    href={profile.company_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: THEME.accent, textDecoration: "none" }}
+                  >
+                    {profile.company} ↗
+                  </a>
+                ) : (
+                  profile.company
+                )}
               </div>
             </div>
           )}
