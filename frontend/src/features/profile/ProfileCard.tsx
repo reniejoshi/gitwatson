@@ -82,20 +82,49 @@ export function ProfileCard({ profile }: ProfileCardProps) {
       )}
 
       <div style={sectionDivider}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ color: THEME.accent }}>REPOS</div>
+        <a
+          href={`${profile.html_url}?tab=repositories`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: "none",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ color: THEME.accent }}>REPOS ↗</div>
           <div style={{ fontWeight: 700 }}>
             {profile.repositories_count ?? 0}
           </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ color: THEME.accent }}>FOLLOWERS</div>
+        </a>
+        <a
+          href={`${profile.html_url}?tab=followers`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: "none",
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <div style={{ color: THEME.accent }}>FOLLOWERS ↗</div>
           <div style={{ fontWeight: 700 }}>{profile.followers_count ?? 0}</div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ color: THEME.accent }}>FOLLOWING</div>
+        </a>
+        <a
+          href={`${profile.html_url}?tab=following`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: "none",
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <div style={{ color: THEME.accent }}>FOLLOWING ↗</div>
           <div style={{ fontWeight: 700 }}>{profile.following_count ?? 0}</div>
-        </div>
+        </a>
 
         <div style={{ ...sectionDivider, marginTop: "0.4rem", gap: "0.55rem" }}>
           <div style={{ color: THEME.accent }}>LANGUAGES</div>
@@ -142,7 +171,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
               <div style={{ color: THEME.accent }}>COMPANY</div>
               <div style={{ fontWeight: 700, marginTop: "0.15rem" }}>
                 <a
-                  href={`https://github.com/${profile.company}`}
+                  href={`https://github.com/${profile.company.at(0) === "@" ? profile.company.slice(1) : profile.company}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: THEME.link }}
