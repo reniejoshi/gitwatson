@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -e
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR)
+
+if echo "$STAGED_FILES" | grep -q "^frontend/"; then
+  echo "→ Formatting & linting frontend..."
+  (
+    cd frontend
+    npm run format
+    npm run lint
+    npx tsc -b
+  )
+  echo "$STAGED_FILES" | grep "^frontend/" | xargs -r git add
+fi
+
+if echo "$STAGED_FILES" | grep -q "^backend/"; then
+  echo "→ Formatting & linting Rust backend..."
+  (
+    cd backend
+    cargo fmt
+    cargo clippy -- -D warnings
+  )
+  echo "$STAGED_FILES" | grep "^backend/" | xargs -r git add
+fi
