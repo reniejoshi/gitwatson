@@ -1,11 +1,14 @@
 <h1 align="left">
   <img src="./frontend/public/favicon.svg" alt="gitwatson logo" width="30" height="30" />
   <strong>gitwatson</strong>
+</h1>
+<div>
 
   ![Rust](https://img.shields.io/badge/Rust-D34516?logo=rust&logoColor=white)
   ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-  ![React](https://img.shields.io/badge/-ReactJs-61DBFB?logo=react&logoColor=white)
-</h1>
+  ![React](https://img.shields.io/badge/ReactJs-61DBFB?logo=react&logoColor=white)
+
+</div>
 
 ### Local Development
 
