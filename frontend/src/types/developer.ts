@@ -6,7 +6,6 @@ export interface GitHubProfile {
   name?: string;
   top_languages?: string[];
   bio?: string;
-  status_emoji?: string;
   status_message?: string;
   company?: string;
   location?: string;

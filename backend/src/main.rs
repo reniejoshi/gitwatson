@@ -27,7 +27,6 @@ struct GitHubProfile {
     name: Option<String>,
     top_languages: Option<Vec<String>>,
     bio: Option<String>,
-    status_emoji: Option<String>,
     status_message: Option<String>,
     company: Option<String>,
     location: Option<String>,
@@ -142,33 +141,6 @@ async fn get_user(
                 let msg = raw_msg.trim();
                 if !msg.is_empty() {
                     profile.status_message = Some(msg.to_string());
-                }
-            }
-
-            if profile.status_emoji.is_none() {
-                if let Some((_, after_img)) = block.split_once("class=\"emoji")
-                    && let Some((_, after_alt)) = after_img.split_once("alt=\"")
-                    && let Some((emoji, _)) = after_alt.split_once('"')
-                {
-                    let emoji = emoji.trim();
-                    if !emoji.is_empty() {
-                        profile.status_emoji = Some(emoji.to_string());
-                    }
-                } else if let Some((_, after_emoji)) = block.split_once("<g-emoji")
-                    && let Some((open_tag, rest)) = after_emoji.split_once('>')
-                {
-                    let inner = rest
-                        .split_once("</g-emoji>")
-                        .map(|(t, _)| t.trim())
-                        .unwrap_or("");
-                    if !inner.is_empty() {
-                        profile.status_emoji = Some(inner.to_string());
-                    } else if let Some((_, after_alias)) = open_tag.split_once("alias=\"")
-                        && let Some((alias, _)) = after_alias.split_once('"')
-                    {
-                        profile.status_emoji = Some(format!(":{alias}:"));
-                        println!("Status emoji: {alias}");
-                    }
                 }
             }
         }

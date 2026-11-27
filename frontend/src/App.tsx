@@ -286,7 +286,7 @@ function App() {
                 {data.profile.bio}
               </p>
             )}
-            {(data.profile.status_emoji || data.profile.status_message) && (
+            {data.profile.status_message && (
               <p
                 style={{
                   margin: "1rem 0 0",
@@ -295,7 +295,7 @@ function App() {
                   lineHeight: 1.5,
                 }}
               >
-                {data.profile.status_emoji} {data.profile.status_message}
+                {data.profile.status_message}
               </p>
             )}
             <div
